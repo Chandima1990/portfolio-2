@@ -12,6 +12,7 @@ import reactfoodImg from '@/../public/images/react-food.png';
 import jitsi from '@/../public/images/jitsi.png';
 import ukg from '@/../public/images/ukg.png';
 import mas from '@/../public/images/mas.png';
+import financepal from '@/../public/images/financepal.png';
 import {
   BicepsFlexed,
   BookOpenText,
@@ -177,9 +178,48 @@ export const images = {
   filedriveImg: cpfb,
   projectmanagementImg,
   reactfoodImg,
+  financepal
 };
 
 export const projectsData = [
+  {
+    title: 'FinancialPal - Personal Finance Dashboard',
+    role: "Full Stack Developer",
+    company: "Personal Side Project",
+    description: `A privacy-first personal finance dashboard built with SvelteKit that helps users track their financial portfolio across multiple currencies
+     with advanced growth projections and inflation-adjusted calculations. No logins required - all data stays local in your browser. Created as a simple, 
+     privacy-focused alternative to complex finance tracking apps that require account creation and data sharing.`,
+    tags: [
+      'SvelteKit',
+      'TypeScript', 
+      'Tailwind CSS',
+      'Chart.js',
+      'Vite',
+      'Vitest',
+      'GitHub Actions',
+      'Apache',
+      'PM2'
+    ],
+    imageUrl: financepal,
+    teamSize: 1,
+    responsibilities: [
+      "Designed and developed complete frontend application with SvelteKit and TypeScript",
+      "Implemented interactive charts and visualizations using Chart.js for portfolio breakdown",
+      "Built multi-currency support with real-time conversion capabilities", 
+      "Created growth projection algorithms with customizable return rates and monthly contributions",
+      "Implemented privacy-first architecture with local storage only - no backend or user accounts",
+      "Developed inflation adjustment calculations for realistic long-term projections",
+      "Built responsive mobile-first design using Tailwind CSS",
+      "Created comprehensive CI/CD pipeline with GitHub Actions and automated testing",
+      "Set up production deployment with VPS, Apache reverse proxy, and PM2 process management",
+      "Implemented data export/import functionality for backup and restore capabilities",
+      "Optimized for SEO with complete Open Graph meta tags and accessibility best practices"
+    ],
+    startDate: "2025",
+    endDate: "Now",
+    liveUrl: "https://financepal.chandimae.com",
+    repositoryUrl: "https://github.com/Chandima1990/finance-pal-svelte"
+  },
   {
     title: 'Central Provident Fund Board',
     role: "System Analyst",
