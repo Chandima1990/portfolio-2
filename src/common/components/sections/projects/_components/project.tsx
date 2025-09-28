@@ -5,7 +5,9 @@ import { projectsData } from '@/common/lib/data';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-type ProjectProps = (typeof projectsData)[number];
+type ProjectProps = (typeof projectsData)[number] & {
+  liveUrl?: string;
+};
 
 export default function Project({
   title,
@@ -17,7 +19,8 @@ export default function Project({
   teamSize,
   responsibilities,
   startDate,
-  endDate
+  endDate,
+  liveUrl
 }: ProjectProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -57,6 +60,22 @@ export default function Project({
             <h4>{startDate} to {endDate}</h4>
             <h3 className="text-2xl font-semibold uppercase">{title}</h3>
             <i>{role}, {company}</i>
+            {liveUrl && (
+              <div className="mt-2">
+                <a 
+                  href={liveUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                  onClick={(e) => e.stopPropagation()} // Prevent triggering expand/collapse
+                >
+                  🌐 View Live Site
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            )}
             <p className="mt-2 leading-relaxed">{description}</p>
             <i className="mt-2 leading-relaxed">Team Size: {teamSize}</i>
             <div className="mb-5 max-w-md rounded-xl shadow-md overflow-hidden">
