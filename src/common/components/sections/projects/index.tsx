@@ -8,7 +8,7 @@ import SectionHeading from "@/common/components/shared/section-heading";
 import SectionDivider from "@/common/components/shared/section-divider";
 
 export default function Projects() {
-  const { ref } = useSectionInView("projects", 0.25);
+  const { ref } = useSectionInView("projects", 0.1);
 
   return (
     <section
