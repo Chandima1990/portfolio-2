@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 
 export default function About() {
-  const { ref } = useSectionInView("about", 0.4);
+  const { ref } = useSectionInView("about");
   const divRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
