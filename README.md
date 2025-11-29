@@ -44,6 +44,8 @@ Follow these instructions to set up the project locally.
 
 ### Running the Project
 
+#### Option 1: Traditional Development (Node.js)
+
 Start the development server:
     ```
     npm run dev
@@ -54,6 +56,21 @@ Start the development server:
     ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+#### Option 2: Docker (Recommended for Production)
+
+Run with Docker:
+    ```sh
+    docker build -t portfolio:local .
+    docker run -d --name portfolio -p 3000:3000 portfolio:local
+    ```
+
+Or use Docker Compose:
+    ```sh
+    docker compose -f docker-compose.staging.yml up -d
+    ```
+
+See [DOCKER-QUICK-START.md](DOCKER-QUICK-START.md) for more details.
 
 ## Usage
 

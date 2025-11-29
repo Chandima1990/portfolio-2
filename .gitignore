@@ -46,3 +46,6 @@ vps-management/vps management docs/http_to_https_redirection.md
 vps-management/vps management docs/setup_staging_environment.md
 vps-management/vps management docs/ssl_certificate_chain_fix.md
 vps-management/vps management docs/vps_troubleshooting.md
+.github/workflows/keys/id_rsa
+.github/workflows/keys/id_rsa.pub
+.github/workflows/keys/known_hosts

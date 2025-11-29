@@ -1,0 +1,126 @@
+name: Deploy Portfolio to Staging (Docker)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate image metadata
+        id: meta
+        run: |
+          IMAGE_TAG="portfolio:$(date -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA::8}"
+          echo "tags=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker buildx build \
+            --tag ${{ steps.meta.outputs.tags }} \
+            --load \
+            .
+
+      - name: Save Docker image
+        run: |
+          docker save ${{ steps.meta.outputs.tags }} | gzip > portfolio-image.tar.gz
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: portfolio-image.tar.gz
+          retention-days: 7
+
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+      SSH_USER: ${{ secrets.VPS_USER }}
+      SSH_HOST: ${{ secrets.VPS_HOST }}
+      SSH_PORT: ${{ secrets.VPS_PORT || '22' }}
+      SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Download Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Configure SSH
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${SSH_PORT:-22}" "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Copy files to VPS
+        run: |
+          scp -P "${SSH_PORT:-22}" portfolio-image.tar.gz \
+            "$SSH_USER@$SSH_HOST:/tmp/portfolio-staging-image.tar.gz"
+          scp -P "${SSH_PORT:-22}" docker-compose.staging.yml \
+            "$SSH_USER@$SSH_HOST:/tmp/docker-compose.staging.yml"
+
+      - name: Deploy to Staging
+        run: |
+          ssh -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" \
+            IMAGE_TAG="$IMAGE_TAG" \
+            bash -se <<'EOF'
+          set -euo pipefail
+
+          echo "🐳 Starting Docker deployment..."
+
+          # Stop PM2 if running
+          if command -v pm2 &> /dev/null; then
+            if pm2 list | grep -q "portfolio-staging"; then
+              pm2 stop portfolio-staging || true
+              pm2 delete portfolio-staging || true
+              pm2 save || true
+            fi
+          fi
+
+          # Load Docker image
+          docker load < /tmp/portfolio-staging-image.tar.gz
+          rm /tmp/portfolio-staging-image.tar.gz
+
+          # Deploy
+          DEPLOY_DIR="$HOME/docker/portfolio-staging"
+          mkdir -p "$DEPLOY_DIR"
+          mv /tmp/docker-compose.staging.yml "$DEPLOY_DIR/docker-compose.yml"
+          cd "$DEPLOY_DIR"
+
+          # Update image tag
+          sed -i "s|build:.*|image: $IMAGE_TAG|g" docker-compose.yml
+          sed -i '/context:/d' docker-compose.yml
+          sed -i '/dockerfile:/d' docker-compose.yml
+
+          # Start container
+          docker compose down || true
+          docker compose up -d
+
+          # Wait for health check
+          for i in {1..30}; do
+            if docker inspect portfolio-staging --format='{{.State.Health.Status}}' 2>/dev/null | grep -q "healthy"; then
+              echo "✅ Deployment successful!"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "❌ Deployment failed"
+          docker compose logs --tail=50
+          exit 1
+          EOF
