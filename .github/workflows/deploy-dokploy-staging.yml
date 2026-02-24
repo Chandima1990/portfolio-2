@@ -1,0 +1,20 @@
+name: Deploy Staging via Dokploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Dokploy deployment webhook
+        env:
+          DOKPLOY_DEPLOY_HOOK: ${{ secrets.DOKPLOY_DEPLOY_HOOK_PORTFOLIO_STAGING }}
+        run: |
+          if [ -z "$DOKPLOY_DEPLOY_HOOK" ]; then
+            echo "Missing secret: DOKPLOY_DEPLOY_HOOK_PORTFOLIO_STAGING"
+            exit 1
+          fi
+          curl -fsS -X POST "$DOKPLOY_DEPLOY_HOOK"
