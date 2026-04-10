@@ -5,8 +5,6 @@ import { Resend } from "resend";
 import ContactFormEmail from "@/common/components/sections/contact/_components/contact-form-email";
 import { getErrorMessage, validateString } from "@/common/lib/utils";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const sendEmail = async (formData: FormData) => {
   const senderEmail = formData.get("senderEmail");
   const message = formData.get("message");
@@ -24,6 +22,10 @@ export const sendEmail = async (formData: FormData) => {
 
   let data;
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return { error: "Email service is not configured" };
+    }
+    const resend = new Resend(process.env.RESEND_API_KEY);
     data = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: ["emcc1990@gmail.com"],
