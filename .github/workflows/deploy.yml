@@ -23,6 +23,16 @@ jobs:
           npm install
           npm run build
 
+      - name: Write runtime env file
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+        run: |
+          {
+            echo "RESEND_API_KEY=$RESEND_API_KEY"
+            echo "RESEND_FROM_EMAIL=$RESEND_FROM_EMAIL"
+          } > .env
+
       - name: Clean Up Old Files on VPS
         uses: appleboy/ssh-action@master
         with:

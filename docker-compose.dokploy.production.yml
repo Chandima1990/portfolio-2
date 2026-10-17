@@ -10,6 +10,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL}
+      - CONTACT_TO_EMAIL=${CONTACT_TO_EMAIL}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
