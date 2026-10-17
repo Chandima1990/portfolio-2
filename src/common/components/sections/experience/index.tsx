@@ -1,16 +1,17 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import React from 'react';
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import { useTheme } from 'next-themes';
-import { useHasMounted, useSectionInView } from '@/common/lib/hooks';
+
+import SectionDivider from '@/common/components/shared/section-divider';
 import SectionHeading from '@/common/components/shared/section-heading';
 import { experiencesData } from '@/common/lib/data';
-import SectionDivider from '@/common/components/shared/section-divider';
+import { useHasMounted, useSectionInView } from '@/common/lib/hooks';
 
 export default function Experience() {
   const { ref } = useSectionInView('experience', 0.3);
@@ -24,7 +25,7 @@ export default function Experience() {
       className="w-full scroll-mt-20 dark:bg-darkBg dark:text-white"
     >
       <SectionHeading>My experience</SectionHeading>
-      <VerticalTimeline animate={false} lineColor='#ffffff09'>
+      <VerticalTimeline animate={false} lineColor="#ffffff09">
         {hasMounted &&
           experiencesData.map((item, index) => (
             <React.Fragment key={index}>
