@@ -49,3 +49,8 @@ vps-management/vps management docs/vps_troubleshooting.md
 .github/workflows/keys/id_rsa
 .github/workflows/keys/id_rsa.pub
 .github/workflows/keys/known_hosts
+
+# env files (secrets)
+.env
+.env.*
+!.env.example
