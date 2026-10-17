@@ -57,20 +57,17 @@ Start the development server:
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-#### Option 2: Docker (Recommended for Production)
+#### Option 2: Docker
 
-Run with Docker:
+Run the production image locally:
     ```sh
     docker build -t portfolio:local .
     docker run -d --name portfolio -p 3000:3000 portfolio:local
     ```
 
-Or use Docker Compose:
-    ```sh
-    docker compose -f docker-compose.staging.yml up -d
-    ```
+### Deployment
 
-See [DOCKER-QUICK-START.md](DOCKER-QUICK-START.md) for more details.
+Pushes to `main` run the `Deploy Production via Dokploy` and `Deploy Staging via Dokploy` workflows, which call Dokploy's deploy webhooks. Dokploy builds the `Dockerfile` using `docker-compose.dokploy.production.yml` (https://chandimae.com) and `docker-compose.dokploy.staging.yml` (https://stg.chandimae.com), and supplies `RESEND_API_KEY`, `RESEND_FROM_EMAIL` and `CONTACT_TO_EMAIL` from its environment settings.
 
 ## Usage
 
