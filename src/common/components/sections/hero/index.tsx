@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import "next-cloudinary/dist/cld-video-player.css";
-import SectionDivider from "@/common/components/shared/section-divider";
-import TextAnimation from "./_components/text-animation";
-import { useSectionInView } from "@/common/lib/hooks";
-import { useActiveSectionContext } from "@/common/stores/active-section";
-import { smoothScrollTo } from "@/common/lib/utils";
-import { motion } from "framer-motion";
-import { Linkedin } from "lucide-react";
-import Image from "next/image";
+import 'next-cloudinary/dist/cld-video-player.css';
+import { motion } from 'framer-motion';
+import { Linkedin } from 'lucide-react';
+import Image from 'next/image';
+
+import SectionDivider from '@/common/components/shared/section-divider';
+import { useSectionInView } from '@/common/lib/hooks';
+import { smoothScrollTo } from '@/common/lib/utils';
+import { useActiveSectionContext } from '@/common/stores/active-section';
+
+import TextAnimation from './_components/text-animation';
 
 export default function Hero() {
-  const { ref } = useSectionInView("home");
+  const { ref } = useSectionInView('home');
   const { setActiveSection, setTimeOfLastClick } = useActiveSectionContext();
 
   return (
@@ -23,27 +25,29 @@ export default function Hero() {
       >
         <div
           className={
-            "absolute left-0 top-0 h-screen w-full dark:bg-[#0000007c]"
+            'absolute left-0 top-0 h-screen w-full dark:bg-[#0000007c]'
           }
         ></div>
         <video
-          width="480"
+          width="1280"
           height="720"
-          preload="none"
+          preload="metadata"
+          poster="/layout-poster.jpg"
           autoPlay
-          crossOrigin="anonymous"
           muted
           loop
+          playsInline
+          aria-hidden="true"
           className="absolute -z-10 h-screen w-screen object-cover"
         >
-          <source src="/layout.mp4" />
+          <source src="/layout.mp4" type="video/mp4" />
         </video>
         <div className="container flex flex-col items-start justify-center tracking-wide text-black dark:text-white">
           <div className="container relative flex h-full w-full flex-col items-center">
-            <div className="h-72 w-[280px] text-center text-[2rem] font-extrabold sm:w-[520px] md:w-[700px] lg:mb-5 lg:w-[920px] lg:text-[3rem]">
+            <div className="h-52 w-[280px] sm:h-60 lg:h-64 text-center text-[2rem] font-extrabold sm:w-[520px] md:w-[700px] lg:mb-5 lg:w-[920px] lg:text-[3rem]">
               <motion.span
-                initial={{ y: -100, x: "-50%", opacity: 0 }}
-                animate={{ y: 0, x: "-50%", opacity: 1 }}
+                initial={{ y: -100, x: '-50%', opacity: 0 }}
+                animate={{ y: 0, x: '-50%', opacity: 1 }}
                 className="mb-10 text-start font-extrabold"
               >
                 Hey!
@@ -51,6 +55,21 @@ export default function Hero() {
               <br />
               <TextAnimation delay={1} baseText={`I'm Chandima`} />
             </div>
+            <motion.div
+              className="mb-6 flex max-w-[44rem] flex-col items-center gap-2 px-4 text-center"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <h1 className="text-sm font-bold uppercase tracking-wider sm:text-lg sm:tracking-widest lg:text-2xl">
+                Full-Stack Developer · .NET / Angular / Azure · Singapore
+              </h1>
+              <p className="text-xs font-medium sm:text-sm lg:text-lg">
+                9+ years building secure, large-scale systems for finance,
+                government and healthcare, and AI-assisted products built with
+                engineering discipline.
+              </p>
+            </motion.div>
             <motion.div
               className="w-92 flex flex-col items-center justify-center gap-3 px-4 text-sm font-medium md:mt-12 md:flex-row lg:text-lg"
               initial={{ opacity: 0, y: 100 }}
@@ -60,17 +79,19 @@ export default function Hero() {
               }}
             >
               <a
-                className="group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-gray-700 px-7 py-3 text-white outline-none transition hover:bg-lightBeige hover:text-black hover:dark:text-black sm:w-auto"
-                href={"https://medium.com/@ChandimaEkanayake"}
+                className="group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-gray-700 px-7 py-3 text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#e29578] hover:bg-lightBeige hover:text-black hover:dark:text-black sm:w-auto"
+                href={'https://medium.com/@ChandimaEkanayake'}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <span>Read my medium</span>
               </a>
               <a
-                className="group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-darkBg px-7 py-3 text-white outline-none transition hover:bg-lightBeige hover:text-black hover:dark:text-black sm:w-auto"
+                className="group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-darkBg px-7 py-3 text-white outline-none transition focus-visible:ring-2 focus-visible:ring-[#e29578] hover:bg-lightBeige hover:text-black hover:dark:text-black sm:w-auto"
+                href="#contact"
                 onClick={(e) => {
-                  smoothScrollTo({ e, id: "contact" });
-                  setActiveSection("contact");
+                  smoothScrollTo({ e, id: 'contact' });
+                  setActiveSection('contact');
                   setTimeOfLastClick(Date.now());
                 }}
               >
@@ -78,7 +99,7 @@ export default function Hero() {
               </a>
 
               <a
-                className="borderBlack group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-black outline-none transition hover:bg-gray-100 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 sm:w-auto"
+                className="borderBlack group flex w-64 cursor-pointer items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-black outline-none transition focus-visible:ring-2 focus-visible:ring-[#e29578] hover:bg-gray-100 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 sm:w-auto"
                 href="/resume.pdf"
                 download
               >
@@ -90,19 +111,23 @@ export default function Hero() {
                   className="borderBlack flex h-[50px] w-[50px] cursor-pointer items-center justify-center gap-2 rounded-full bg-white p-2 text-black transition hover:bg-gray-100 hover:text-gray-950 dark:bg-white/10 dark:text-white/60 dark:hover:bg-white/20"
                   href="https://www.linkedin.com/in/chandima-ekanayake/"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn profile"
                 >
-                  <Linkedin />
+                  <Linkedin aria-hidden="true" />
                 </a>
                 <a
                   className="borderBlack flex h-[50px] w-[50px] cursor-pointer items-center justify-center gap-2 rounded-full bg-white p-2 text-gray-700 transition hover:bg-gray-100 hover:text-gray-950 dark:bg-white/10 dark:text-white/60 dark:hover:bg-white/20"
                   href="https://github.com/Chandima1990"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub profile"
                 >
                   <Image
                     width={25}
                     height={25}
-                    src={"/svgs/github.svg"}
-                    alt="github icon"
+                    src={'/svgs/github.svg'}
+                    alt=""
                   />
                 </a>
               </div>

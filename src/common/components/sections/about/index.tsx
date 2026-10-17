@@ -1,29 +1,30 @@
-"use client";
+'use client';
 
-import { useSectionInView } from "@/common/lib/hooks";
-import portfolioImg from "@/../public/images/photo.jpg";
-import { smoothScrollTo } from "@/common/lib/utils";
-import SectionDivider from "@/common/components/shared/section-divider";
-import SectionHeading from "@/common/components/shared/section-heading";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
-import { useRef } from "react";
-import Link from "next/link";
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRef } from 'react';
+
+import portfolioImg from '@/../public/images/photo.jpg';
+import SectionDivider from '@/common/components/shared/section-divider';
+import SectionHeading from '@/common/components/shared/section-heading';
+import { useSectionInView } from '@/common/lib/hooks';
+import { smoothScrollTo } from '@/common/lib/utils';
 
 export default function About() {
-  const { ref } = useSectionInView("about");
+  const { ref } = useSectionInView('about');
   const divRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: divRef,
-    offset: ["0 1", "1.33 1"],
+    offset: ['0 1', '1.33 1'],
   });
   const scaleProgess = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
   const opacityProgess = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
 
   return (
     <motion.section
-      className="z-50 flex h-[1000px] w-full flex-col items-center justify-start leading-8 dark:bg-darkBg dark:text-white md:scroll-mt-4 lg:h-[1100px] lg:scroll-mt-24"
+      className="z-50 flex w-full pb-8 flex-col items-center justify-start leading-8 dark:bg-darkBg dark:text-white md:scroll-mt-4 lg:h-[1100px] lg:scroll-mt-24"
       ref={ref}
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
@@ -44,26 +45,24 @@ export default function About() {
             <div className="text-md relative z-40 flex flex-col gap-3 font-semibold tracking-wide text-primary lg:absolute lg:right-0 lg:top-[27%] lg:block lg:max-w-[580px] lg:text-start lg:text-lg xl:top-1/3 xl:h-[442px] xl:max-w-[650px]">
               <div className="flex h-full flex-col justify-center gap-6">
                 <span>
-                Highly motivated and experienced software developer with a 
-                strong background in full-stack development and a passion for 
-                solving complex problems. With 4 years of academic  experience 
-                and substantial number of years of professional experience since 2016, 
-                I have a solid foundation in computer science principles and a track record 
-                of delivering high-quality software solutions on time. 
-                <br />
-                <br />
-                I am skilled
-                 in a variety of programming languages and technologies, including C#, 
-                 TypeScript, JavaScript, and related frameworks, and I have experience 
-                 working on both small and large-scale projects. I am a proactive team 
-                 player who is always willing to take on new challenges and learn new skills.
+                  I am a full-stack developer with over 9 years of professional
+                  experience, currently a System Analyst at the Central
+                  Provident Fund Board in Singapore. I have built and supported
+                  systems for banks, government bodies, healthcare and
+                  manufacturing, mostly with C#, .NET, Angular, TypeScript and
+                  Azure.
+                  <br />
+                  <br />I care about security, maintainable architecture and
+                  shipping on time. Lately I build personal products with AI
+                  agents such as Claude Code and Codex, backed by specs, tests
+                  and automated quality gates.
                 </span>
                 <p className="flex flex-col items-start sm:items-center lg:items-start">
                   <span>So if you are interested,</span>
                   <Link
-                    href={"contact"}
+                    href="#contact"
                     onClick={(e) => {
-                      smoothScrollTo({ e, id: "contact" });
+                      smoothScrollTo({ e, id: 'contact' });
                     }}
                     className="w-52 lg:w-40"
                   >

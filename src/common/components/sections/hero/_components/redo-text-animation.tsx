@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { useEffect } from "react";
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { useEffect } from 'react';
 
 export interface IRedoTextAnimationProps {
   delay: number;
@@ -11,21 +11,13 @@ export default function RedoTextAnimation({ delay }: IRedoTextAnimationProps) {
   const textIndex = useMotionValue(0);
 
   const texts = [
-    "Highly motivated and experienced software developer with",
-    "a strong background in full-stack development and a passion",
-    "for solving complex problems. With 4 years of academic experience",
-    "and over 7 years of professional experience, I have a solid",
-    "foundation in computer science principles and a track record", 
-    "of delivering high-quality software solutions on time.",
-    "I am skilled in a variety of programming languages and",
-    "technologies, including C#, TypeScript, JavaScript, and", 
-    "related frameworks, and I have experience working on", 
-    "both small and large-scale projects. I am a proactive", 
-    "team player who is always willing to take on new",
-    "challenges and learn new skills.",
+    'I build secure .NET systems.',
+    'I ship Angular front ends.',
+    'I deploy on Azure.',
+    'I build with AI agents.',
   ];
 
-  const baseText = useTransform(textIndex, (latest) => texts[latest] || "");
+  const baseText = useTransform(textIndex, (latest) => texts[latest] || '');
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const displayText = useTransform(rounded, (latest) =>
@@ -35,12 +27,12 @@ export default function RedoTextAnimation({ delay }: IRedoTextAnimationProps) {
 
   useEffect(() => {
     animate(count, 60, {
-      type: "tween",
+      type: 'tween',
       delay: delay,
       duration: 3,
-      ease: "easeIn",
+      ease: 'easeIn',
       repeat: Infinity,
-      repeatType: "reverse",
+      repeatType: 'reverse',
       repeatDelay: 1,
       onUpdate(latest) {
         if (updatedThisRound.get() === true && latest > 0) {
