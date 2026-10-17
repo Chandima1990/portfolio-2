@@ -12,9 +12,29 @@ jobs:
       - name: Trigger Dokploy deployment webhook
         env:
           DOKPLOY_DEPLOY_HOOK: ${{ secrets.DOKPLOY_DEPLOY_HOOK_PORTFOLIO_PRODUCTION }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Manual deploy from GitHub Actions' }}
+          COMMITS: ${{ toJSON(github.event.commits || fromJSON('[]')) }}
         run: |
           if [ -z "$DOKPLOY_DEPLOY_HOOK" ]; then
             echo "Missing secret: DOKPLOY_DEPLOY_HOOK_PORTFOLIO_PRODUCTION"
             exit 1
           fi
-          curl -fsS -X POST "$DOKPLOY_DEPLOY_HOOK"
+
+          # Dokploy only deploys GitHub-sourced apps for a push-shaped payload whose
+          # ref matches the app's branch; a bare POST returns 301 and deploys nothing.
+          jq -n \
+            --arg ref "$REF" \
+            --arg sha "$SHA" \
+            --arg message "$COMMIT_MESSAGE" \
+            --argjson commits "$COMMITS" \
+            '{ref: $ref, after: $sha, head_commit: {id: $sha, message: $message}, commits: $commits}' \
+            > payload.json
+
+          status=$(curl -sS -o response.txt -w '%{http_code}' -X POST "$DOKPLOY_DEPLOY_HOOK" \
+            -H 'Content-Type: application/json' \
+            -H 'X-GitHub-Event: push' \
+            --data @payload.json)
+          echo "Dokploy responded with HTTP $status: $(cat response.txt)"
+          [ "$status" = "200" ]
