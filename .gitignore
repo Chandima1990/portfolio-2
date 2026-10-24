@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+vps-management/id_rsa
+vps-management/id_rsa.pub
+vps-management/known_hosts
+vps-management/known_hosts.old
+vps-management/vps management docs/deployment_workflow.md
+vps-management/vps management docs/enable_apache_virtual_host.md
+vps-management/vps management docs/fix_ssl_cloned_domain.md
+vps-management/vps management docs/fix_virtualmin_ssl.md
+vps-management/vps management docs/http_to_https_redirection.md
+vps-management/vps management docs/setup_staging_environment.md
+vps-management/vps management docs/ssl_certificate_chain_fix.md
+vps-management/vps management docs/vps_troubleshooting.md
